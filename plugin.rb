@@ -36,7 +36,7 @@ class OAuth2BasicAuthenticator < ::Auth::OAuth2Authenticator
                           token_method: SiteSetting.oauth2_token_url_method.downcase.to_sym
                         }
                         opts[:authorize_options] = SiteSetting.oauth2_authorize_options.split("|").map(&:to_sym)
-                        opts[:scope] = 'email profile'
+                        opts[:scope] = 'openid profile email'
 
                         if SiteSetting.oauth2_send_auth_header?
                           opts[:token_params] = { headers: { 'Authorization' => basic_auth_header } }
@@ -109,7 +109,7 @@ class OAuth2BasicAuthenticator < ::Auth::OAuth2Authenticator
     user_details = fetch_user_details(token, auth['info'][:id])
 
     result.name = user_details[:name]
-    result.username = user_details[:username]
+    result.username = user_details[:name].strip.downcase
     result.email = user_details[:email]
     result.email_valid = result.email.present? && SiteSetting.oauth2_email_verified?
 
