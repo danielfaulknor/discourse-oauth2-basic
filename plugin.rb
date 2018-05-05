@@ -24,7 +24,7 @@ end
 class OAuth2BasicAuthenticator < ::Auth::OAuth2Authenticator
   def register_middleware(omniauth)
     omniauth.provider :oauth2_basic,
-                      name: 'oauth2_basic',
+                      name: 'Internet by Design Auth',
                       setup: lambda { |env|
                         opts = env['omniauth.strategy'].options
                         opts[:client_id] = SiteSetting.oauth2_client_id
